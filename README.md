@@ -1,5 +1,7 @@
 # Forge Studio — Astro Design Starter
 
+> **[Live Demo →](https://forge-studio-peach.vercel.app)**
+
 A complete, production-grade Astro site demonstrating every pattern from the astro-design skill. Dark theme, Motion.dev animations, Tailwind v4, and astro-icon — all wired up and ready to customize.
 
 ## Run it
