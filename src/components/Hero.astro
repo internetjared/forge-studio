@@ -1,0 +1,238 @@
+---
+import { Icon } from 'astro-icon/components';
+import { siteConfig } from '@config/site';
+
+const { hero } = siteConfig;
+
+// Split title on newlines for multi-line display
+const titleLines = hero.title.split('\n');
+---
+
+<section class="hero-section gradient-mesh" style="position: relative; overflow: hidden; min-height: calc(100vh - 4rem); display: flex; align-items: center;">
+
+  <!-- Background orbs -->
+  <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; overflow: hidden;">
+    <div style="position: absolute; top: -10%; left: -5%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%); filter: blur(40px);"></div>
+    <div style="position: absolute; bottom: -10%; right: -5%; width: 40%; height: 40%; background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%); filter: blur(40px);"></div>
+  </div>
+
+  <div class="container" style="position: relative; z-index: 1; width: 100%;">
+    <div class="hero-grid">
+
+      <!-- Left: Content (asymmetric — text starts at col 1, ends at col 7) -->
+      <div class="hero-content">
+        <!-- Booking badge -->
+        <div class="animate-badge" style="margin-bottom: 2rem;">
+          <span class="badge badge-accent">
+            <span style="width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-accent); animation: glowPulse 2s ease-in-out infinite; display: inline-block; flex-shrink: 0;"></span>
+            {hero.badge}
+          </span>
+        </div>
+
+        <!-- Main headline — asymmetric, left-aligned, oversized -->
+        <h1 class="display animate-title" style="margin-bottom: 1.5rem;">
+          {titleLines.map((line, i) => (
+            <span style={`display: block; ${i === 2 ? 'color: var(--color-accent);' : ''}`}>
+              {line}
+            </span>
+          ))}
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="body-lg animate-subtitle" style="color: var(--color-text-muted); max-width: 30rem; margin-bottom: 2.5rem;">
+          {hero.subtitle}
+        </p>
+
+        <!-- CTA group -->
+        <div class="animate-cta" style="display: flex; flex-wrap: wrap; gap: 0.875rem; align-items: center;">
+          <a href={hero.cta.primary.href} class="btn btn-primary">
+            {hero.cta.primary.label}
+            <Icon name="lucide:arrow-right" class="w-4 h-4" />
+          </a>
+          <a href={hero.cta.secondary.href} class="btn btn-secondary">
+            {hero.cta.secondary.label}
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Visual placeholder — abstract composition -->
+      <div class="hero-visual animate-visual" aria-hidden="true">
+        <div class="hero-visual-inner">
+          <!-- Card 1 — large -->
+          <div class="hero-card hero-card-main">
+            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%); border-radius: var(--radius-lg); display: flex; align-items: flex-end; padding: 1.5rem;">
+              <div>
+                <div style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--color-text); margin-bottom: 0.25rem;">Fenwick & Co.</div>
+                <div style="font-size: 0.875rem; color: var(--color-text-muted);">Brand strategy + web</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 — accent metric -->
+          <div class="hero-card hero-card-metric">
+            <div style="text-align: center;">
+              <div style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--color-accent); line-height: 1;">99</div>
+              <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.25rem;">Lighthouse score</div>
+            </div>
+          </div>
+
+          <!-- Card 3 — small warm -->
+          <div class="hero-card hero-card-small">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div style="width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--color-warm-subtle); display: flex; align-items: center; justify-content: center;">
+                <Icon name="lucide:star" class="w-4 h-4" style="color: var(--color-warm);" />
+              </div>
+              <div>
+                <div style="font-size: 0.875rem; font-weight: 600; color: var(--color-text);">98% retention</div>
+                <div style="font-size: 0.75rem; color: var(--color-text-muted);">Since 2013</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="hero-stats animate-cta">
+      {siteConfig.stats.map((stat, i) => (
+        <>
+          {i > 0 && <div class="stats-divider" aria-hidden="true"></div>}
+          <div class="stat-item">
+            <span
+              class="stat-number"
+              data-target={stat.value}
+              data-suffix={stat.suffix}
+              style="font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--color-text); line-height: 1;"
+            >
+              0
+            </span>
+            <span style="font-size: 0.875rem; color: var(--color-text-muted); display: block; margin-top: 0.25rem;">{stat.label}</span>
+          </div>
+        </>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 7fr 5fr;
+      gap: 4rem;
+      padding-top: 6rem;
+      padding-bottom: 5rem;
+    }
+  }
+
+  .hero-visual {
+    position: relative;
+  }
+
+  .hero-visual-inner {
+    position: relative;
+    height: 24rem;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-visual-inner {
+      height: 28rem;
+    }
+  }
+
+  .hero-card {
+    position: absolute;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hero-card-main {
+    top: 0;
+    left: 0;
+    right: 3rem;
+    bottom: 6rem;
+  }
+
+  .hero-card-metric {
+    bottom: 0;
+    right: 0;
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface-raised);
+  }
+
+  .hero-card-small {
+    bottom: 3rem;
+    left: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-surface-raised);
+    min-width: 12rem;
+  }
+
+  /* Stats bar */
+  .hero-stats {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 2rem 0;
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    flex: 1;
+    min-width: 7rem;
+    padding: 0.5rem 1.5rem;
+  }
+
+  .stat-item:first-child {
+    padding-left: 0;
+  }
+
+  .stats-divider {
+    width: 1px;
+    height: 3rem;
+    background: var(--color-border);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 480px) {
+    .stats-divider { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .stat-item { padding: 0; min-width: calc(50% - 0.75rem); }
+  }
+</style>
+
+<script>
+  import { animate, inView } from "motion";
+
+  // Animated stat counters — run when stats come into view
+  inView(".hero-stats", () => {
+    document.querySelectorAll(".stat-number").forEach(el => {
+      const htmlEl = el as HTMLElement;
+      const target = parseInt(htmlEl.dataset.target ?? "0", 10);
+      const suffix = htmlEl.dataset.suffix ?? "";
+
+      animate(0, target, {
+        duration: 1.8,
+        easing: [0.16, 1, 0.3, 1],
+        onUpdate(value) {
+          htmlEl.textContent = Math.round(value).toString() + suffix;
+        },
+      });
+    });
+  });
+</script>

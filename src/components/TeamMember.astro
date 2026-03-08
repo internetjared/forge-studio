@@ -1,0 +1,66 @@
+---
+import type { TeamMember } from '@config/site';
+
+interface Props {
+  member: TeamMember;
+  index?: number;
+}
+
+const { member, index = 0 } = Astro.props;
+
+// Generate initials from name
+const initials = member.name.split(' ').map(n => n[0]).join('').slice(0, 2);
+---
+
+<div class="team-member spring-card" style={`--member-accent: ${member.accentColor};`}>
+  <!-- Avatar placeholder -->
+  <div
+    class="member-avatar"
+    aria-hidden="true"
+    style={`background: linear-gradient(135deg, ${member.accentColor}30 0%, ${member.accentColor}10 100%);`}
+  >
+    <span class="member-initials" style={`color: ${member.accentColor};`}>{initials}</span>
+  </div>
+
+  <!-- Info -->
+  <div class="member-info">
+    <h3 class="heading-md" style="margin: 0 0 0.25rem;">{member.name}</h3>
+    <p style="font-size: 0.875rem; font-weight: 600; color: var(--member-accent); margin: 0 0 0.875rem; letter-spacing: 0.01em;">{member.role}</p>
+    <p style="font-size: 0.9375rem; color: var(--color-text-muted); line-height: 1.65; margin: 0;">{member.bio}</p>
+  </div>
+</div>
+
+<style>
+  .team-member {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .team-member:hover {
+    border-color: var(--member-accent);
+  }
+
+  .member-avatar {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .member-initials {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    opacity: 0.6;
+  }
+
+  .member-info {
+    padding: 1.5rem;
+  }
+</style>

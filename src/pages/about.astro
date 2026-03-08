@@ -1,0 +1,320 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import TeamMember from '@components/TeamMember.astro';
+import StatsCounter from '@components/StatsCounter.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
+import { siteConfig } from '@config/site';
+
+const values = [
+  {
+    icon: 'lucide:target',
+    title: 'Opinionated by design',
+    description: 'We make decisions. Not mood boards with six options. Clients hire us for our perspective, not to rubber-stamp theirs.',
+  },
+  {
+    icon: 'lucide:zap',
+    title: 'Performance is a feature',
+    description: 'Every site ships with Lighthouse 95+. Speed isn\'t something we optimize later — it\'s a constraint we design within.',
+  },
+  {
+    icon: 'lucide:shield-check',
+    title: 'Scope is sacred',
+    description: 'Fixed budgets. Clear deliverables. No scope creep, no hourly billing surprises. We define the work, then we do the work.',
+  },
+  {
+    icon: 'lucide:repeat',
+    title: 'Long-term thinking',
+    description: '98% client retention means we build things that last. No tech debt, no fragile dependencies, no sites you\'ll need to rebuild in two years.',
+  },
+];
+---
+
+<BaseLayout
+  title="About"
+  description="Forge Studio is a design and development agency in Columbus, Ohio. 12 years of building brands, websites, and experiences that perform."
+>
+  <!-- Page header -->
+  <section class="section" style="position: relative; overflow: hidden;">
+    <!-- Background accent -->
+    <div aria-hidden="true" style="position: absolute; top: 0; right: -10%; width: 50%; height: 60%; background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 60%); pointer-events: none;"></div>
+
+    <div class="container" style="position: relative;">
+      <div class="about-header">
+        <div class="about-header-content">
+          <span class="badge badge-accent animate-badge" style="margin-bottom: 1.5rem; display: inline-flex;">About us</span>
+          <h1 class="display animate-title" style="margin-bottom: 1.5rem;">
+            Three people.<br>
+            <em style="font-style: normal; color: var(--color-accent);">Twelve years.</em>
+          </h1>
+          <p class="body-lg animate-subtitle" style="color: var(--color-text-muted); max-width: 32rem;">
+            Forge Studio started in 2013 with a simple thesis: most agency websites are mediocre because most agencies optimize for volume, not quality. We do the opposite.
+          </p>
+        </div>
+
+        <!-- Visual placeholder: abstract composition -->
+        <div class="about-visual animate-visual" aria-hidden="true">
+          <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: 1rem; padding: 2rem;">
+            <!-- Columbus badge -->
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+              <Icon name="lucide:map-pin" class="w-4 h-4" style="color: var(--color-accent);" />
+              <div>
+                <div style="font-weight: 600; font-size: 0.9375rem; color: var(--color-text);">Columbus, Ohio</div>
+                <div style="font-size: 0.8125rem; color: var(--color-text-muted);">Short North Arts District</div>
+              </div>
+            </div>
+            <!-- Founded badge -->
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+              <Icon name="lucide:calendar" class="w-4 h-4" style="color: var(--color-warm);" />
+              <div>
+                <div style="font-weight: 600; font-size: 0.9375rem; color: var(--color-text);">Founded 2013</div>
+                <div style="font-size: 0.8125rem; color: var(--color-text-muted);">Still going strong</div>
+              </div>
+            </div>
+            <!-- Team badge -->
+            <div style="display: flex; align-items: center; gap: 0.75rem; padding: 1rem 1.25rem; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+              <Icon name="lucide:users" class="w-4 h-4" style="color: #10b981;" />
+              <div>
+                <div style="font-weight: 600; font-size: 0.9375rem; color: var(--color-text);">3 people</div>
+                <div style="font-size: 0.8125rem; color: var(--color-text-muted);">Small by design</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story section with parallax -->
+  <section class="section dot-grid" style="position: relative;">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-content reveal">
+          <h2 class="heading-xl" style="margin-bottom: 1.5rem;">Why we stay small</h2>
+          <div style="display: flex; flex-direction: column; gap: 1.25rem; color: var(--color-text-muted); font-size: 1.0625rem; line-height: 1.75;">
+            <p>
+              Most agencies scale by adding people. More designers, more developers, more project managers to manage the people managing the projects. We watched that happen to agencies we used to admire and decided: not us.
+            </p>
+            <p>
+              Three people means every client works directly with the people building their site. No account managers translating your feedback. No junior designer googling "how to set up Astro." The people in the meeting are the people doing the work.
+            </p>
+            <p>
+              It also means we're selective. Four projects per quarter, maximum. We turn down more work than we take on — which means the projects we say yes to get our full attention.
+            </p>
+          </div>
+        </div>
+
+        <!-- Parallax visual element -->
+        <div class="story-visual" aria-hidden="true">
+          <div class="parallax-element" style="height: 100%; display: flex; align-items: center; justify-content: center;">
+            <div style="width: 16rem; height: 16rem; border-radius: 50%; border: 1px solid var(--color-border-strong); display: flex; align-items: center; justify-content: center; position: relative;">
+              <div style="position: absolute; inset: 1rem; border-radius: 50%; border: 1px solid var(--color-accent-subtle);"></div>
+              <div style="position: absolute; inset: 2.5rem; border-radius: 50%; background: var(--color-accent-subtle); display: flex; align-items: center; justify-content: center;">
+                <span style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">4</span>
+              </div>
+              <span style="position: absolute; bottom: -2rem; font-size: 0.8125rem; color: var(--color-text-subtle); text-align: center;">projects per quarter</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section" style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+      <StatsCounter />
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        badge="What we believe"
+        title="How we work."
+        subtitle="Not platitudes. Operating principles that shape every decision."
+        class="reveal"
+        style="margin-bottom: 3rem;"
+      />
+
+      <div class="values-grid">
+        {values.map(value => (
+          <div class="value-card spring-card reveal">
+            <div style="width: 3rem; height: 3rem; border-radius: var(--radius-md); background: var(--color-accent-subtle); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; color: var(--color-accent);">
+              <Icon name={value.icon} class="w-5 h-5" />
+            </div>
+            <h3 class="heading-md" style="margin: 0 0 0.75rem;">{value.title}</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9375rem; line-height: 1.65; margin: 0;">{value.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section" style="background: var(--color-surface); border-top: 1px solid var(--color-border);">
+    <div class="container">
+      <SectionHeader
+        badge="The team"
+        title="Who does the work."
+        subtitle="Three people. No layers. The people you meet are the people building your site."
+        class="reveal"
+        style="margin-bottom: 3rem;"
+      />
+
+      <div class="team-grid">
+        {siteConfig.team.map((member, i) => (
+          <div class="reveal">
+            <TeamMember member={member} index={i} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section gradient-mesh reveal">
+    <div class="container" style="text-align: center; max-width: 36rem;">
+      <h2 class="heading-xl" style="margin-bottom: 1rem;">Want to work together?</h2>
+      <p class="body-lg" style="color: var(--color-text-muted); margin-bottom: 2rem;">
+        We take on four new projects per quarter. If the timing's right, let's talk.
+      </p>
+      <a href="/contact" class="btn btn-primary">
+        Start a project
+        <Icon name="lucide:arrow-right" class="w-4 h-4" />
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .about-header {
+      grid-template-columns: 7fr 5fr;
+    }
+  }
+
+  .about-visual {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    min-height: 20rem;
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .story-grid {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  .story-visual {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .story-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .values-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .value-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .team-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+<script>
+  import { animate, inView, stagger, scroll } from "motion";
+
+  function initAbout() {
+    // Scroll reveals
+    document.querySelectorAll(".reveal").forEach(el => {
+      inView(el as Element, () => {
+        animate(
+          el,
+          { opacity: [0, 1], y: [24, 0] },
+          { duration: 0.55, easing: [0.16, 1, 0.3, 1] }
+        );
+      });
+    });
+
+    // Stagger grids
+    [".values-grid", ".team-grid"].forEach(selector => {
+      const grid = document.querySelector(selector);
+      if (!grid) return;
+      inView(grid, () => {
+        animate(
+          Array.from(grid.querySelectorAll(":scope > *")) as Element[],
+          { opacity: [0, 1], y: [28, 0] },
+          { duration: 0.45, delay: stagger(0.08), easing: [0.16, 1, 0.3, 1] }
+        );
+      });
+    });
+
+    // Parallax on story visual
+    const parallaxEl = document.querySelector(".parallax-element");
+    const storySection = parallaxEl?.closest("section");
+    if (parallaxEl && storySection) {
+      scroll(
+        animate(parallaxEl, { y: ["0%", "20%"] }),
+        { target: storySection }
+      );
+    }
+
+    // Spring hover on cards
+    document.querySelectorAll(".spring-card").forEach(card => {
+      card.addEventListener("mouseenter", () => {
+        animate(card as Element, { y: -4, scale: 1.01 }, { type: "spring", stiffness: 350, damping: 22 });
+      });
+      card.addEventListener("mouseleave", () => {
+        animate(card as Element, { y: 0, scale: 1 }, { type: "spring", stiffness: 280, damping: 26 });
+      });
+    });
+  }
+
+  initAbout();
+  document.addEventListener("astro:page-load", initAbout);
+</script>

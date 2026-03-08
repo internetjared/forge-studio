@@ -1,0 +1,70 @@
+---
+import { siteConfig } from '@config/site';
+---
+
+<!-- Standalone stats counter — reusable on any page -->
+<div class="stats-counter-grid reveal">
+  {siteConfig.stats.map((stat, i) => (
+    <div class="stats-counter-item" style={`--delay: ${i * 100}ms`}>
+      <div
+        class="stat-counter-number"
+        data-target={stat.value}
+        data-suffix={stat.suffix}
+        style="font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: var(--color-accent); line-height: 1; display: block; margin-bottom: 0.5rem;"
+      >
+        0
+      </div>
+      <div style="font-size: 0.9375rem; color: var(--color-text-muted);">{stat.label}</div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .stats-counter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .stats-counter-item {
+    padding: 2rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  @media (max-width: 768px) {
+    .stats-counter-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>
+
+<script>
+  import { animate, inView } from "motion";
+
+  function initCounters() {
+    document.querySelectorAll(".stats-counter-grid").forEach(grid => {
+      inView(grid as Element, () => {
+        grid.querySelectorAll(".stat-counter-number").forEach(el => {
+          const htmlEl = el as HTMLElement;
+          const target = parseInt(htmlEl.dataset.target ?? "0", 10);
+          const suffix = htmlEl.dataset.suffix ?? "";
+
+          animate(0, target, {
+            duration: 2,
+            easing: [0.16, 1, 0.3, 1],
+            onUpdate(value) {
+              htmlEl.textContent = Math.round(value).toString() + suffix;
+            },
+          });
+        });
+      });
+    });
+  }
+
+  initCounters();
+  document.addEventListener("astro:page-load", initCounters);
+</script>

@@ -1,0 +1,261 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('work');
+  return projects.map(project => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+
+const { title, client, year, category, services, accentColor, excerpt, results } = project.data;
+
+// Get adjacent projects for prev/next navigation
+const allProjects = await getCollection('work');
+const currentIndex = allProjects.findIndex(p => p.slug === project.slug);
+const prevProject = currentIndex > 0 ? allProjects[currentIndex - 1] : null;
+const nextProject = currentIndex < allProjects.length - 1 ? allProjects[currentIndex + 1] : null;
+---
+
+<BaseLayout title={title} description={excerpt}>
+  <!-- Article header -->
+  <section class="section">
+    <div class="container">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" style="margin-bottom: 3rem;">
+        <ol style="list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--color-text-muted);">
+          <li><a href="/work" style="color: var(--color-text-muted); text-decoration: none; hover:color: var(--color-text);">Work</a></li>
+          <li aria-hidden="true"><Icon name="lucide:chevron-right" class="w-3.5 h-3.5" /></li>
+          <li aria-current="page" style="color: var(--color-text-subtle);">{title}</li>
+        </ol>
+      </nav>
+
+      <!-- Hero section -->
+      <div class="case-header">
+        <div class="case-header-content">
+          <span class="badge badge-accent" style={`border-color: ${accentColor}40; color: ${accentColor}; background: ${accentColor}12; margin-bottom: 1.5rem; display: inline-flex;`}>
+            {category}
+          </span>
+          <h1 class="display" style="margin-bottom: 1.5rem; white-space: pre-wrap;">{title}</h1>
+          <p class="body-lg" style="color: var(--color-text-muted); max-width: 38rem;">{excerpt}</p>
+
+          <dl class="case-meta">
+            <div>
+              <dt style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-subtle); margin-bottom: 0.25rem;">Client</dt>
+              <dd style="font-size: 1rem; color: var(--color-text);">{client}</dd>
+            </div>
+            <div>
+              <dt style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-subtle); margin-bottom: 0.25rem;">Year</dt>
+              <dd style="font-size: 1rem; color: var(--color-text);">{year}</dd>
+            </div>
+            <div>
+              <dt style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-subtle); margin-bottom: 0.25rem;">Services</dt>
+              <dd style="font-size: 0.9rem; color: var(--color-text);">{services.join(', ')}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Project visual -->
+        <div
+          class="case-visual"
+          aria-hidden="true"
+          style={`background: linear-gradient(135deg, ${accentColor}20 0%, ${accentColor}08 100%);`}
+        >
+          <div style={`position: absolute; inset: 0; background: radial-gradient(circle at 35% 35%, ${accentColor}35 0%, transparent 65%);`}></div>
+          <div style="position: absolute; bottom: 2rem; right: 2rem; font-family: var(--font-display); font-size: 6rem; font-weight: 700; color: rgba(255,255,255,0.05); line-height: 1; letter-spacing: -0.04em;">
+            {year}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results metrics -->
+  {results && results.length > 0 && (
+    <section style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+      <div class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
+        <h2 style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-subtle); margin-bottom: 1.5rem;">Results</h2>
+        <div class="results-grid">
+          {results.map(result => (
+            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+              <Icon name="lucide:trending-up" class="w-5 h-5" style={`color: ${accentColor}; flex-shrink: 0; margin-top: 0.125rem;`} />
+              <span style="font-size: 1.0625rem; color: var(--color-text); line-height: 1.5;">{result}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Case study body -->
+  <section class="section">
+    <div class="container">
+      <div class="case-body">
+        <article class="prose">
+          <Content />
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Previous / Next navigation -->
+  <section style="border-top: 1px solid var(--color-border);">
+    <div class="container" style="padding-top: 2.5rem; padding-bottom: 2.5rem;">
+      <div class="case-nav">
+        {prevProject ? (
+          <a href={`/work/${prevProject.slug}`} class="case-nav-link case-nav-prev">
+            <Icon name="lucide:arrow-left" class="w-4 h-4" />
+            <div>
+              <div style="font-size: 0.75rem; color: var(--color-text-subtle); margin-bottom: 0.25rem;">Previous</div>
+              <div style="font-weight: 600; color: var(--color-text);">{prevProject.data.title}</div>
+            </div>
+          </a>
+        ) : <div />}
+        {nextProject ? (
+          <a href={`/work/${nextProject.slug}`} class="case-nav-link case-nav-next">
+            <div style="text-align: right;">
+              <div style="font-size: 0.75rem; color: var(--color-text-subtle); margin-bottom: 0.25rem;">Next</div>
+              <div style="font-weight: 600; color: var(--color-text);">{nextProject.data.title}</div>
+            </div>
+            <Icon name="lucide:arrow-right" class="w-4 h-4" />
+          </a>
+        ) : <div />}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .case-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .case-header {
+      grid-template-columns: 6fr 5fr;
+    }
+  }
+
+  .case-header-content {}
+
+  .case-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .case-visual {
+    position: relative;
+    border-radius: var(--radius-xl);
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .results-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .case-body {
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+
+  /* Prose styles — applied to rendered MDX content */
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose :global(p) {
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+    font-size: 1.0625rem;
+  }
+
+  .prose :global(strong) {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .prose :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .prose :global(li) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    font-size: 1.0625rem;
+  }
+
+  .prose :global(li::before) {
+    content: '→';
+    color: var(--color-accent);
+    flex-shrink: 0;
+    font-weight: 600;
+    margin-top: 0.05em;
+  }
+
+  .case-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .case-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease;
+    max-width: 16rem;
+  }
+
+  .case-nav-link:hover {
+    color: var(--color-text);
+  }
+</style>

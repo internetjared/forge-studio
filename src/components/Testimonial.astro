@@ -1,0 +1,58 @@
+---
+import type { Testimonial } from '@config/site';
+
+interface Props {
+  testimonial: Testimonial;
+}
+
+const { testimonial } = Astro.props;
+
+const initials = testimonial.author.split(' ').map(n => n[0]).join('').slice(0, 2);
+---
+
+<figure
+  class="testimonial-card spring-card"
+  style={`--t-accent: ${testimonial.accentColor};`}
+>
+  <!-- Quote mark -->
+  <div aria-hidden="true" style="font-family: var(--font-display); font-size: 5rem; line-height: 0.8; color: var(--t-accent); opacity: 0.2; margin-bottom: 0.5rem; user-select: none;">
+    "
+  </div>
+
+  <blockquote>
+    <p style="font-size: 1.0625rem; line-height: 1.7; color: var(--color-text); margin: 0 0 1.5rem; font-style: normal;">
+      {testimonial.quote}
+    </p>
+  </blockquote>
+
+  <figcaption style="display: flex; align-items: center; gap: 0.875rem; margin-top: auto;">
+    <!-- Avatar -->
+    <div
+      aria-hidden="true"
+      style={`width: 2.75rem; height: 2.75rem; border-radius: 50%; background: ${testimonial.accentColor}22; display: flex; align-items: center; justify-content: center; flex-shrink: 0;`}
+    >
+      <span style={`font-family: var(--font-display); font-weight: 700; font-size: 0.875rem; color: ${testimonial.accentColor};`}>{initials}</span>
+    </div>
+    <div>
+      <div style="font-weight: 600; font-size: 0.9375rem; color: var(--color-text);">{testimonial.author}</div>
+      <div style="font-size: 0.8125rem; color: var(--color-text-muted);">{testimonial.role}, {testimonial.company}</div>
+    </div>
+  </figcaption>
+</figure>
+
+<style>
+  .testimonial-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: border-color 0.2s ease;
+  }
+
+  .testimonial-card:hover {
+    border-color: var(--t-accent);
+  }
+</style>

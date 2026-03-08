@@ -1,0 +1,283 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import Testimonial from '@components/Testimonial.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
+import { siteConfig } from '@config/site';
+import { getCollection } from 'astro:content';
+
+// Featured projects from content collection
+const allProjects = await getCollection('work');
+const featuredProjects = allProjects.filter(p => p.data.featured).slice(0, 3);
+---
+
+<BaseLayout title={siteConfig.name} description={siteConfig.description}>
+
+  <!-- ===== HERO ===== -->
+  <Hero />
+
+  <!-- ===== SERVICES ===== -->
+  <section class="section dot-grid" id="services" style="position: relative;">
+    <div class="container">
+      <SectionHeader
+        badge="What we do"
+        title={`Four things.\nDone right.`}
+        subtitle="We don't spread thin across every discipline. We go deep on four."
+        class="reveal"
+        style="margin-bottom: 3rem;"
+      />
+
+      <div class="services-grid">
+        {siteConfig.services.map((service, i) => (
+          <ServiceCard service={service} index={i} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEATURED WORK ===== -->
+  <section class="section" style="position: relative; overflow: hidden;">
+    <!-- Background accent -->
+    <div aria-hidden="true" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; height: 60%; background: radial-gradient(circle, rgba(59, 130, 246, 0.04) 0%, transparent 70%); pointer-events: none;"></div>
+
+    <div class="container" style="position: relative;">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 3rem;">
+        <SectionHeader
+          badge="Selected work"
+          title={`Results that\nspeak for themselves.`}
+          class="reveal"
+        />
+        <a href="/work" class="btn btn-secondary reveal" style="flex-shrink: 0;">
+          All work
+          <Icon name="lucide:arrow-right" class="w-4 h-4" />
+        </a>
+      </div>
+
+      <div class="work-grid">
+        {featuredProjects.map((project, i) => (
+          <article class="work-item reveal" style={`--delay: ${i * 80}ms;`}>
+            <!-- Project visual placeholder -->
+            <a href={`/work/${project.slug}`} style="display: block; text-decoration: none; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--color-border); transition: border-color 0.3s ease;" class="work-link">
+              <!-- Thumbnail -->
+              <div
+                style={`aspect-ratio: 16/10; background: linear-gradient(135deg, ${project.data.accentColor}20 0%, ${project.data.accentColor}08 100%); position: relative; overflow: hidden;`}
+              >
+                <div style={`position: absolute; inset: 0; background: radial-gradient(circle at 30% 30%, ${project.data.accentColor}30 0%, transparent 60%);`}></div>
+                <div style="position: absolute; bottom: 1rem; right: 1.5rem; font-family: var(--font-display); font-size: 5rem; font-weight: 700; color: rgba(255,255,255,0.05); line-height: 1; letter-spacing: -0.04em; user-select: none;">
+                  {project.data.year}
+                </div>
+              </div>
+              <!-- Meta -->
+              <div style="padding: 1.5rem; background: var(--color-surface);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <span style={`font-size: 0.8125rem; font-weight: 600; color: ${project.data.accentColor}; letter-spacing: 0.02em;`}>
+                    {project.data.client}
+                  </span>
+                  <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">
+                    {project.data.services.join(' · ')}
+                  </span>
+                </div>
+                <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; color: var(--color-text); margin: 0;">
+                  {project.data.title}
+                </h3>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="section" style="background: var(--color-surface);">
+    <div class="container">
+      <SectionHeader
+        badge="What clients say"
+        title="Words we didn't write."
+        align="center"
+        class="reveal"
+        style="margin-bottom: 3rem;"
+      />
+
+      <div class="testimonials-grid">
+        {siteConfig.testimonials.map((testimonial) => (
+          <div class="reveal">
+            <Testimonial testimonial={testimonial} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BANNER ===== -->
+  <section class="section gradient-mesh reveal">
+    <div class="container">
+      <div class="cta-block">
+        <div class="cta-content">
+          <h2 class="heading-xl" style="margin-bottom: 1rem;">{siteConfig.cta.title}</h2>
+          <p class="body-lg" style="color: var(--color-text-muted); margin-bottom: 2rem;">{siteConfig.cta.subtitle}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+            <a href={siteConfig.cta.button.href} class="btn btn-primary">
+              {siteConfig.cta.button.label}
+              <Icon name="lucide:arrow-right" class="w-4 h-4" />
+            </a>
+            <span style="font-size: 0.875rem; color: var(--color-text-subtle);">{siteConfig.cta.note}</span>
+          </div>
+        </div>
+        <!-- Decorative element -->
+        <div class="cta-decoration" aria-hidden="true">
+          <div style="width: 12rem; height: 12rem; border-radius: 50%; border: 1px solid var(--color-border-strong); display: flex; align-items: center; justify-content: center; position: relative;">
+            <div style="position: absolute; inset: 0.75rem; border-radius: 50%; border: 1px solid var(--color-accent-subtle);"></div>
+            <span style="font-family: var(--font-display); font-size: 0.875rem; font-weight: 600; color: var(--color-accent); letter-spacing: 0.04em; text-transform: uppercase;">
+              Let's go
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .services-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .work-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .work-link:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 4rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+  }
+
+  @media (min-width: 768px) {
+    .cta-block {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .cta-content {
+    flex: 1;
+    max-width: 36rem;
+  }
+
+  .cta-decoration {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .cta-decoration {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cta-block {
+      padding: 2rem;
+    }
+  }
+</style>
+
+<script>
+  import { animate, inView, stagger } from "motion";
+
+  function initAnimations() {
+    // Scroll-triggered reveals for all .reveal elements
+    document.querySelectorAll(".reveal").forEach(el => {
+      inView(el as Element, () => {
+        animate(
+          el,
+          { opacity: [0, 1], y: [24, 0] },
+          { duration: 0.55, easing: [0.16, 1, 0.3, 1] }
+        );
+      });
+    });
+
+    // Staggered grid reveals
+    [".services-grid", ".work-grid", ".testimonials-grid"].forEach(selector => {
+      const grid = document.querySelector(selector);
+      if (!grid) return;
+
+      inView(grid, () => {
+        const children = grid.querySelectorAll(":scope > *");
+        animate(
+          Array.from(children) as Element[],
+          { opacity: [0, 1], y: [32, 0], scale: [0.97, 1] },
+          {
+            duration: 0.45,
+            delay: stagger(0.08),
+            easing: [0.16, 1, 0.3, 1],
+          }
+        );
+      });
+    });
+
+    // Spring hover on cards
+    document.querySelectorAll(".spring-card").forEach(card => {
+      card.addEventListener("mouseenter", () => {
+        animate(card as Element, { y: -4, scale: 1.01 }, {
+          type: "spring",
+          stiffness: 350,
+          damping: 22,
+        });
+      });
+      card.addEventListener("mouseleave", () => {
+        animate(card as Element, { y: 0, scale: 1 }, {
+          type: "spring",
+          stiffness: 280,
+          damping: 26,
+        });
+      });
+    });
+  }
+
+  initAnimations();
+  document.addEventListener("astro:page-load", initAnimations);
+</script>

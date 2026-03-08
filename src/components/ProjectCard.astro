@@ -1,0 +1,158 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'work'>;
+  index?: number;
+}
+
+const { project, index = 0 } = Astro.props;
+const { title, client, year, category, services, accentColor, excerpt } = project.data;
+
+const categoryLabel = {
+  brand: 'Brand',
+  web: 'Web',
+  motion: 'Motion',
+  development: 'Dev',
+}[category];
+---
+
+<article class="project-card spring-card" style={`--accent: ${accentColor};`}>
+  <a href={`/work/${project.slug}`} class="project-card-inner" tabindex="0">
+
+    <!-- Visual placeholder — colored gradient -->
+    <div
+      class="project-thumbnail"
+      aria-hidden="true"
+      style={`background: linear-gradient(135deg, ${accentColor}22 0%, ${accentColor}08 100%);`}
+    >
+      <div class="project-thumbnail-glow" style={`background: radial-gradient(circle at 30% 40%, ${accentColor}40 0%, transparent 60%);`}></div>
+      <div class="project-year">{year}</div>
+    </div>
+
+    <!-- Content -->
+    <div class="project-content">
+      <div class="project-meta">
+        <span class="badge" style={`border-color: ${accentColor}40; color: ${accentColor}; background: ${accentColor}12;`}>
+          {categoryLabel}
+        </span>
+        <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">{client}</span>
+      </div>
+
+      <h3 class="heading-md" style="margin: 0.75rem 0 0.625rem;">
+        {title}
+      </h3>
+
+      <p style="font-size: 0.9375rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+        {excerpt}
+      </p>
+
+      <div class="project-services">
+        {services.map(s => (
+          <span style="font-size: 0.8125rem; color: var(--color-text-subtle);">{s}</span>
+        ))}
+      </div>
+
+      <div class="project-cta">
+        <span style="font-size: 0.875rem; font-weight: 600; color: var(--color-text);">View case study</span>
+        <Icon name="lucide:arrow-right" class="w-4 h-4 project-arrow" style="color: var(--color-text-muted);" />
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+  .project-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--accent, var(--color-accent));
+  }
+
+  .project-card-inner {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .project-thumbnail {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  .project-thumbnail-glow {
+    position: absolute;
+    inset: 0;
+  }
+
+  .project-year {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.06);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    user-select: none;
+  }
+
+  .project-content {
+    padding: 1.5rem;
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .project-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-services span::after {
+    content: '·';
+    margin-left: 0.5rem;
+    opacity: 0.4;
+  }
+
+  .project-services span:last-child::after {
+    display: none;
+  }
+
+  .project-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    transition: gap 0.2s ease;
+  }
+
+  .project-card:hover .project-cta {
+    gap: 0.75rem;
+  }
+
+  .project-arrow {
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .project-card:hover .project-arrow {
+    color: var(--color-accent);
+    transform: translateX(2px);
+  }
+</style>

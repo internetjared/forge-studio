@@ -1,0 +1,295 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ServiceCard from '@components/ServiceCard.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
+import { Icon } from 'astro-icon/components';
+import { siteConfig } from '@config/site';
+
+const processSteps = [
+  {
+    number: '01',
+    title: 'Discovery',
+    description: 'We learn your business, your audience, and your constraints. Stakeholder interviews, competitive analysis, and a content audit. Takes one week.',
+    duration: '1 week',
+  },
+  {
+    number: '02',
+    title: 'Strategy',
+    description: 'Positioning, messaging architecture, sitemap, and content brief. We define what the site needs to say and how it needs to say it. You review and approve.',
+    duration: '1 week',
+  },
+  {
+    number: '03',
+    title: 'Design & Build',
+    description: 'We design in the browser, not in Figma. You see real, interactive progress every week. Two rounds of revision included.',
+    duration: '4–6 weeks',
+  },
+  {
+    number: '04',
+    title: 'Launch & Support',
+    description: 'QA, performance audit, deployment to Cloudflare Pages or Vercel. Then 30–60 days of post-launch support for bugs, content updates, and minor tweaks.',
+    duration: '1 week',
+  },
+];
+
+const faq = [
+  {
+    question: 'How long does a typical project take?',
+    answer: 'Most projects take 6–8 weeks from kickoff to launch. Simpler sites can be done in 4 weeks. Complex projects with CMS integration can take 10–12 weeks. Timeline depends heavily on how quickly you provide content and feedback.',
+  },
+  {
+    question: 'Why Astro instead of WordPress or Squarespace?',
+    answer: 'Astro sites are significantly faster (Lighthouse 95+ by default), cheaper to host ($0/month on Cloudflare Pages), more secure (no database, no plugins to patch), and easier to maintain long-term. The tradeoff is higher upfront development cost — you\'re paying for something custom.',
+  },
+  {
+    question: 'Do I need to provide my own content?',
+    answer: 'Yes. You know your business better than we do, and content written by someone outside your company always reads like it. We provide a content brief and structure, and we can recommend copywriters if you need one.',
+  },
+  {
+    question: 'What if I need to edit the site myself after launch?',
+    answer: 'We integrate Sanity CMS for clients who need to update content regularly. You get a clean editing interface — no code required. For simpler sites where content rarely changes, we handle updates during the support window.',
+  },
+  {
+    question: 'What happens after the support window ends?',
+    answer: 'We offer monthly retainers for ongoing work — content updates, new pages, performance monitoring. If you don\'t need ongoing support, the site is yours. We hand over all code, accounts, and documentation.',
+  },
+];
+---
+
+<BaseLayout
+  title="Services"
+  description="Brand strategy, web design, development, and motion design. Four services, done right."
+>
+  <!-- Page header -->
+  <section class="section" style="position: relative; overflow: hidden;">
+    <div aria-hidden="true" style="position: absolute; top: -10%; left: 50%; width: 40%; height: 40%; background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 60%); pointer-events: none;"></div>
+    <div class="container" style="position: relative;">
+      <span class="badge badge-accent animate-badge" style="margin-bottom: 1.5rem; display: inline-flex;">Services</span>
+      <h1 class="display animate-title" style="margin-bottom: 1.5rem; max-width: 42rem;">
+        Four things.<br>
+        <em style="font-style: normal; color: var(--color-accent);">Done right.</em>
+      </h1>
+      <p class="body-lg animate-subtitle" style="color: var(--color-text-muted); max-width: 34rem;">
+        We don't spread thin across twenty disciplines. We go deep on four — and we're very good at all of them.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services grid -->
+  <section class="section dot-grid" style="padding-top: 0;">
+    <div class="container">
+      <div class="services-grid">
+        {siteConfig.services.map((service, i) => (
+          <ServiceCard service={service} index={i} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Process timeline -->
+  <section class="section" style="background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+      <SectionHeader
+        badge="How it works"
+        title="Our process."
+        subtitle="Four phases. 6–8 weeks. No surprises."
+        class="reveal"
+        style="margin-bottom: 3rem;"
+      />
+
+      <div class="process-timeline">
+        {processSteps.map((step, i) => (
+          <div class="process-step reveal" style={`--step-delay: ${i * 100}ms;`}>
+            <div class="process-step-number">
+              <span style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--color-accent);">{step.number}</span>
+            </div>
+            <div class="process-step-line" aria-hidden="true"></div>
+            <div class="process-step-content">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <h3 class="heading-md" style="margin: 0;">{step.title}</h3>
+                <span class="badge" style="font-size: 0.75rem;">{step.duration}</span>
+              </div>
+              <p style="color: var(--color-text-muted); font-size: 0.9375rem; line-height: 1.65; margin: 0;">{step.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <SectionHeader
+        badge="FAQ"
+        title="Questions we hear."
+        class="reveal"
+        style="margin-bottom: 3rem;"
+      />
+
+      <div class="faq-list">
+        {faq.map(item => (
+          <details class="faq-item reveal">
+            <summary class="faq-question">
+              <span>{item.question}</span>
+              <Icon name="lucide:plus" class="w-4 h-4 faq-icon" />
+            </summary>
+            <div class="faq-answer">
+              <p style="color: var(--color-text-muted); line-height: 1.7; margin: 0; font-size: 0.9375rem;">{item.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section gradient-mesh reveal" style="border-top: 1px solid var(--color-border);">
+    <div class="container" style="text-align: center; max-width: 36rem;">
+      <h2 class="heading-xl" style="margin-bottom: 1rem;">Ready to start?</h2>
+      <p class="body-lg" style="color: var(--color-text-muted); margin-bottom: 2rem;">
+        Free 30-minute discovery call. No commitment.
+      </p>
+      <a href="/contact" class="btn btn-primary">
+        Start a project
+        <Icon name="lucide:arrow-right" class="w-4 h-4" />
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .services-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Process timeline */
+  .process-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 42rem;
+  }
+
+  .process-step {
+    display: grid;
+    grid-template-columns: 3.5rem 1px 1fr;
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  .process-step-number {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 0.25rem;
+  }
+
+  .process-step-line {
+    background: var(--color-border-strong);
+    position: relative;
+  }
+
+  .process-step:last-child .process-step-line {
+    background: linear-gradient(to bottom, var(--color-border-strong) 60%, transparent 100%);
+  }
+
+  .process-step-content {
+    padding-bottom: 2.5rem;
+  }
+
+  .process-step:last-child .process-step-content {
+    padding-bottom: 0;
+  }
+
+  /* FAQ */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 42rem;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    color: var(--color-text);
+    list-style: none;
+    user-select: none;
+  }
+
+  .faq-question::-webkit-details-marker { display: none; }
+
+  .faq-icon {
+    color: var(--color-text-muted);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+    color: var(--color-accent);
+  }
+
+  .faq-answer {
+    padding-bottom: 1.25rem;
+  }
+</style>
+
+<script>
+  import { animate, inView, stagger } from "motion";
+
+  function initServices() {
+    document.querySelectorAll(".reveal").forEach(el => {
+      inView(el as Element, () => {
+        animate(
+          el,
+          { opacity: [0, 1], y: [20, 0] },
+          { duration: 0.5, easing: [0.16, 1, 0.3, 1] }
+        );
+      });
+    });
+
+    const servicesGrid = document.querySelector(".services-grid");
+    if (servicesGrid) {
+      inView(servicesGrid, () => {
+        animate(
+          Array.from(servicesGrid.querySelectorAll(":scope > *")) as Element[],
+          { opacity: [0, 1], y: [28, 0] },
+          { duration: 0.45, delay: stagger(0.08), easing: [0.16, 1, 0.3, 1] }
+        );
+      });
+    }
+
+    // Spring hover
+    document.querySelectorAll(".spring-card").forEach(card => {
+      card.addEventListener("mouseenter", () => {
+        animate(card as Element, { y: -4, scale: 1.01 }, { type: "spring", stiffness: 350, damping: 22 });
+      });
+      card.addEventListener("mouseleave", () => {
+        animate(card as Element, { y: 0, scale: 1 }, { type: "spring", stiffness: 280, damping: 26 });
+      });
+    });
+  }
+
+  initServices();
+  document.addEventListener("astro:page-load", initServices);
+</script>

@@ -1,0 +1,27 @@
+---
+// Scroll-linked progress bar at top of page
+// Uses Motion.dev scroll() — hardware-accelerated, no JS overhead
+---
+
+<div
+  id="scroll-progress"
+  aria-hidden="true"
+  style="position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--color-accent); transform-origin: left center; transform: scaleX(0); z-index: 9998; will-change: transform;"
+></div>
+
+<script>
+  import { scroll, animate } from "motion";
+
+  function initScrollProgress() {
+    const bar = document.getElementById("scroll-progress");
+    if (!bar) return;
+
+    scroll(
+      animate(bar, { scaleX: [0, 1] }, { duration: 1 }),
+      { axis: "y" }
+    );
+  }
+
+  initScrollProgress();
+  document.addEventListener("astro:page-load", initScrollProgress);
+</script>

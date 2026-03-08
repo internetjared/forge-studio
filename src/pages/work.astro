@@ -1,0 +1,201 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ProjectCard from '@components/ProjectCard.astro';
+import SectionHeader from '@components/ui/SectionHeader.astro';
+import { getCollection } from 'astro:content';
+import { siteConfig } from '@config/site';
+
+const allProjects = await getCollection('work');
+const categories = ['all', 'brand', 'web', 'motion', 'development'] as const;
+type Category = (typeof categories)[number];
+
+const categoryLabels: Record<Category, string> = {
+  all: 'All work',
+  brand: 'Brand',
+  web: 'Web',
+  motion: 'Motion',
+  development: 'Dev',
+};
+---
+
+<BaseLayout
+  title="Work"
+  description="Case studies from Forge Studio — brand, web, motion, and development projects."
+>
+  <!-- Page header -->
+  <section class="section">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+        <div>
+          <span class="badge badge-accent" style="margin-bottom: 1.5rem; display: inline-flex;">Portfolio</span>
+          <h1 class="display" style="margin-bottom: 1.5rem;">Selected<br><em style="font-style: normal; color: var(--color-accent);">work.</em></h1>
+          <p class="body-lg" style="color: var(--color-text-muted); max-width: 32rem;">
+            {allProjects.length} projects. {siteConfig.stats[0].value}+ shipped total. Here's the work we're most proud of.
+          </p>
+        </div>
+      </div>
+
+      <!-- Filter tabs (CSS-only — no JS filter needed at this scale) -->
+      <div class="filter-tabs" role="tablist" aria-label="Filter projects by category" style="margin-top: 3rem; margin-bottom: 3rem;">
+        {categories.map(cat => (
+          <a
+            href={cat === 'all' ? '/work' : `/work?category=${cat}`}
+            class={`filter-tab ${cat === 'all' ? 'filter-tab-active' : ''}`}
+            role="tab"
+            aria-selected={cat === 'all'}
+          >
+            {categoryLabels[cat]}
+          </a>
+        ))}
+      </div>
+
+      <!-- Project grid -->
+      <div class="projects-grid" id="projects-grid">
+        {allProjects.map((project, i) => (
+          <div class="project-item reveal" data-category={project.data.category}>
+            <ProjectCard project={project} index={i} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="section" style="border-top: 1px solid var(--color-border);">
+    <div class="container" style="text-align: center;">
+      <h2 class="heading-xl reveal" style="margin-bottom: 1rem;">Want to be on this page?</h2>
+      <p class="body-lg reveal" style="color: var(--color-text-muted); margin-bottom: 2rem;">We take on four new projects per quarter.</p>
+      <a href="/contact" class="btn btn-primary reveal">Start a project</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .filter-tab {
+    padding: 0.5rem 1.125rem;
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .filter-tab:hover {
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+    background: var(--color-surface);
+  }
+
+  .filter-tab-active {
+    color: var(--color-accent);
+    background: var(--color-accent-subtle);
+    border-color: rgba(59, 130, 246, 0.2);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .projects-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+<script>
+  import { animate, inView, stagger } from "motion";
+
+  function initWork() {
+    // Reveal items as they enter viewport
+    document.querySelectorAll(".reveal").forEach(el => {
+      inView(el as Element, () => {
+        animate(
+          el,
+          { opacity: [0, 1], y: [20, 0] },
+          { duration: 0.5, easing: [0.16, 1, 0.3, 1] }
+        );
+      });
+    });
+
+    // Stagger the project grid
+    const grid = document.getElementById("projects-grid");
+    if (grid) {
+      inView(grid, () => {
+        const items = grid.querySelectorAll(".project-item");
+        animate(
+          Array.from(items) as Element[],
+          { opacity: [0, 1], y: [28, 0] },
+          { duration: 0.4, delay: stagger(0.07), easing: [0.16, 1, 0.3, 1] }
+        );
+      });
+    }
+
+    // Spring hover on project cards
+    document.querySelectorAll(".spring-card").forEach(card => {
+      card.addEventListener("mouseenter", () => {
+        animate(card as Element, { y: -4, scale: 1.01 }, {
+          type: "spring",
+          stiffness: 380,
+          damping: 22,
+        });
+      });
+      card.addEventListener("mouseleave", () => {
+        animate(card as Element, { y: 0, scale: 1 }, {
+          type: "spring",
+          stiffness: 300,
+          damping: 28,
+        });
+      });
+    });
+
+    // URL-based filtering (simple, no JS state management needed)
+    const params = new URLSearchParams(window.location.search);
+    const activeCategory = params.get("category");
+
+    if (activeCategory) {
+      // Update active tab
+      document.querySelectorAll(".filter-tab").forEach(tab => {
+        const href = (tab as HTMLAnchorElement).href;
+        const tabCategory = new URL(href).searchParams.get("category");
+        if (tabCategory === activeCategory) {
+          tab.classList.add("filter-tab-active");
+          (tab as HTMLElement).setAttribute("aria-selected", "true");
+        } else if (tab.textContent?.trim() === "All work") {
+          tab.classList.remove("filter-tab-active");
+          (tab as HTMLElement).setAttribute("aria-selected", "false");
+        }
+      });
+
+      // Hide non-matching items
+      document.querySelectorAll(".project-item").forEach(item => {
+        const itemCategory = (item as HTMLElement).dataset.category;
+        if (itemCategory !== activeCategory) {
+          (item as HTMLElement).style.display = "none";
+        }
+      });
+    }
+  }
+
+  initWork();
+  document.addEventListener("astro:page-load", initWork);
+</script>

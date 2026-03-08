@@ -1,0 +1,53 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  type?: 'button' | 'submit' | 'reset';
+  target?: string;
+  rel?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: className = '',
+  type = 'button',
+  target,
+  rel,
+  ...rest
+} = Astro.props;
+
+const sizeStyles = {
+  sm: 'padding: 0.5rem 1.125rem; font-size: 0.875rem;',
+  md: 'padding: 0.75rem 1.75rem; font-size: 0.9375rem;',
+  lg: 'padding: 1rem 2.25rem; font-size: 1.0625rem;',
+};
+
+const Tag = href ? 'a' : 'button';
+---
+
+{href ? (
+  <a
+    href={href}
+    target={target}
+    rel={rel}
+    class={`btn btn-${variant} ${className}`}
+    style={sizeStyles[size]}
+    {...rest}
+  >
+    <slot />
+  </a>
+) : (
+  <button
+    type={type}
+    class={`btn btn-${variant} ${className}`}
+    style={sizeStyles[size]}
+    {...rest}
+  >
+    <slot />
+  </button>
+)}
